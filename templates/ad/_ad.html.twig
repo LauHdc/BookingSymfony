@@ -1,0 +1,44 @@
+{% set url=path('ads_single',{'slug':ad.slug}) %}
+			
+			<div class="col-md-4">
+			
+				<div class="card">
+				
+					<div class="card-header bg-primary text-light">{{ad.rooms}} chambres <strong>{{ad.price}} &euro;/nuit</strong></div>
+					
+					<div class="card-body">
+					
+						<a href="{{url}}">
+							<img src="{{ad.coverImage}}" alt="{{ad.title}}" style="height: 200px; width: 100%; display: block;">
+						</a>
+						
+						<h4 class="card-title mt-3">{{ad.title}}</h4>
+						
+						<p class="card-text">{{ad.introduction}}</p>
+						
+						<a href="{{url}}" class="btn btn-dark">+ d'infos</a>
+						
+						{% if app.user and app.user == ad.author %}
+							<a href="{{path('ads_edit',{'slug':ad.slug})}}" class="btn btn-dark">Modifier</a>
+						{% endif %}
+					
+					</div>
+					
+					<div class="card-footer text-muted text-center">
+						
+						{% if ad.comments | length > 0 %}
+					
+						{% include 'includes/rating.html.twig' with {'rating':ad.averageRatings} %} sur {{ad.comments | length}} avis
+						
+						{% else %}
+						
+							<span>Pas encore noté</span>
+						
+						{% endif %}
+					
+					</div>
+				
+				</div>
+			
+			</div>
+			

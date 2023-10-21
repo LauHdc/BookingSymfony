@@ -1,0 +1,66 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+		
+  		<div class="container-fluid">
+			
+    		<a class="navbar-brand" href="#">R'BNB</a>
+    		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      			<span class="navbar-toggler-icon"></span>
+    		</button>
+
+		<div class="collapse navbar-collapse" id="navbarColor01">
+			
+      		<ul class="navbar-nav me-auto">
+        		<li class="nav-item">
+          			<a class="nav-link active" href="{{path('homepage')}}">Accueil</a>
+        		</li>
+				
+				<li class="nav-item">
+					<a class="nav-link" href="{{path('ads_list')}}">Annonces</a>
+				</li>
+			</ul>
+        		
+			<ul class="navbar-nav" ml-auto>
+				
+				{% if app.user %}
+				
+					<li class="nav-item">
+						<a class="nav-link" href="{{path('ads_create')}}">Créer une annonce</a>
+					</li>
+				
+					<li class="nav-item">
+						<a class="nav-link" href="{{path('account_bookings')}}">Mes réservations</a>
+					</li>
+					  		
+					<li class="nav-item">		
+						<a class="nav-link" href="{{path('account_profile')}}">Modifier mon profil</a>
+					</li>
+							
+					<li class="nav-item">	
+						<a class="nav-link" href="{{path('account_logout')}}">Déconnexion</a>
+					</li>
+					
+					<img src="{{app.user.avatar}}" alt="Avatar de {{app.user.fullName}}" class="rounded-circle mt-1" style="width: 37px; height: 37px;">
+				  
+					<li class="nav-item">
+						<a class="nav-link" href="{{path('account_home')}}">{{app.user.fullName}}</a>
+					</li>
+				
+				{% else %}
+				
+				<li class="nav-item">
+				  <a class="nav-link" href="{{path('account_register')}}">Inscription</a>
+				</li>
+				
+				<li class="nav-item">
+				  <a class="nav-link" href="{{path('account_login')}}">Connexion</a>
+				</li>
+				
+				{% endif %}
+
+      		</ul>
+			
+    	</div>
+			
+		</div>
+		
+</nav>

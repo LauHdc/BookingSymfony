@@ -1,0 +1,148 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réservation n°{{booking.id}}{% endblock %}
+
+{% block body %}
+
+	<main class="container">
+
+		<h1>
+			Réservation n°{{booking.id}} du bien :
+		</h1>
+			<br>
+		<h3>
+			<a href="{{path('ads_single',{'slug':booking.ad.slug})}}">{{booking.ad.title}}</a>
+		</h3>
+		
+		{% if app.request.query.get('alert') %}
+		
+			<div class="alert alert-success">
+		
+				<h4 class="alert-heading">Ok !</h4>
+				
+				<p>Votre réservation auprès de <a href="{{path('user_show',{'slug':booking.ad.author.slug})}}">{{booking.ad.author.fullName}}</a> pour l'annonce <a href="{{path('ads_single',{'slug':booking.ad.slug})}}">{{booking.ad.title}}</a> a bien été enregistrée.</p>
+				
+			</div>	
+		
+		{% endif %}
+		
+		<div class="row">
+		
+			<div class="col">
+				
+				<div class="alert alert-light mt-3">
+				
+					<h3>Détails</h3>
+					<dl class="row">
+						
+						<dt class="col-md-4">Numéro :</dt>
+						<dd class="col-md-8">{{booking.id}}</dd>
+						
+						<dt class="col-md-4">Date d'arrivée :</dt>
+						<dd class="col-md-8">{{booking.startDate | date('d/m/Y')}}</dd>
+						
+						<dt class="col-md-4">Date de départ :</dt>
+						<dd class="col-md-8">{{booking.endDate | date('d/m/Y')}}</dd>
+						
+						<dt class="col-md-4">Nombre de nuits :</dt>
+						<dd class="col-md-8">{{booking.duration}}</dd>
+						
+						<dt class="col-md-4">Coût par nuit :</dt>
+						<dd class="col-md-8">{{booking.ad.price}}</dd>
+						
+						<dt class="col-md-4">Montant total :</dt>
+						<dd class="col-md-8">{{booking.amount}}</dd>
+						
+						<dt class="col-md-4">Commentaire :</dt>
+						<dd class="col-md-8">{{booking.comment | default('Aucun commentaire')}}</dd>
+					
+					</dl>
+					
+					<h3 class="alert-heading">Propriétaire du bien</h3>
+					
+					<div class="row">
+					
+						<div class="col-md-3">
+						
+							<img src="{{booking.ad.author.avatar}}" alt="Avatar de {{booking.ad.author.fullName}}" class="avatar avatar-medium">
+						
+						</div>
+					
+						<div class="col-md-9">
+							
+							<h4 class="h5">
+								<a href="{{path('user_show',{'slug':booking.ad.author.slug})}}">{{booking.ad.author.fullName}}</a>
+							</h4>
+							
+							<span class="badge bg-primary">{{booking.ad.author.ads | length}} {% if booking.ad.author.ads | length > 1 %} annonces {% else %} annonce {% endif %}</span>
+						
+						</div>
+						
+						<div class="px-3 mt-3">
+							{{booking.ad.author.description | raw}}
+						
+						</div>
+						
+					</div>
+					
+					<div class="alert alert-light" id="comment">
+					
+						<h3 class="alert-heading h5 mb-3">Votre avis nous intéresse !</h3>
+						
+						{% if date() > date(booking.endDate) %}
+						
+							{% set comment = booking.ad.commentFromAuthor(app.user) %}
+						
+							{% if comment is not null %}
+						
+								<blockquote>{{comment.content}}</blockquote>
+						
+								<strong>Note : </strong> {% include 'includes/rating.html.twig' with {'rating':comment.rating} %}
+						
+								{% else %}
+								
+									{{form_start(form)}}
+
+									{{form_widget(form)}}
+
+									<button type="submit" class="btn btn-primary mt-3">Envoyer</button>
+
+									{{form_end(form)}}
+						
+							{% endif %}
+						
+						{% else %}
+						
+							<p class="alert alert-warning">Vous ne pouvez pas noter cette annonce tant que votre séjour n'est pas terminé.</p>
+						
+						{% endif %}
+					
+					</div>
+				
+				</div>
+			
+			</div>
+			
+			<div class="col">
+			
+				<div class="alert alert-light mt-3">
+					
+					<h3 class="alert-heading">Votre hébergement</h3>
+					
+					<h4><a href="{{path('ads_single',{'slug':booking.ad.slug})}}" class="btn btn-secondary">{{booking.ad.title}}</a></h4>
+					
+					<img src="{{booking.ad.coverImage}}" alt="Image de couverture de {{booking.ad.title}}" class="img-fluid">
+					
+					{{booking.ad.content | raw}}
+					
+					<a href="{{path('ads_single',{'slug':booking.ad.slug})}}" class="btn btn-secondary">Détails</a>
+				
+				</div>
+			
+			</div>
+			
+		</div>
+
+	</main>
+
+{% endblock %}

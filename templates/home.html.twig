@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    
+	<main class="container">
+
+		<div class="jumbotron mt-3">
+			<h1 class="h1">R'BNB</h1>
+			<p class="lead">
+				<a class="btn btn-primary btn-lg" href="#" role="button">+ d'infos</a>
+			</p>
+		</div>
+		
+		<h3 class="h1 mt-3 mb-4">Annonces les mieux notées</h3>
+		
+		<section class="row">
+		
+			{% for data in ads %}
+			
+			{% include 'ad/_ad.html.twig' with {'ad':data.annonce} %}
+			
+			{% endfor %}
+		
+		</section>
+		
+		<h3 class="h1 mt-5 mb-4">Nos meilleurs annonceurs</h3>
+		
+		<section class="row">
+			
+		{% for data in users %}
+		
+			<article class="col">
+			
+				<div class="card mb-3">
+					
+  					<h3 class="card-header text-white bg-primary">{{data.user.fullName}}</h3>
+					
+					<div class="card-body">
+
+						<img src="{{data.user.avatar}}" alt="avatar de {{data.user.fullName}}" class="float-left mr-3">
+						
+						<p>{{data.user.introduction}}.</p>
+						
+						<a href="{{path('user_show',{'slug':data.user.slug})}}" class="btn btn-primary">+ d'infos</a>
+
+					</div>
+
+				</div>
+			
+			</article>
+			
+		{% endfor %}
+		
+		</section>
+
+	</main>
+
+{% endblock %}
